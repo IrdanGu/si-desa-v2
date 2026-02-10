@@ -21,7 +21,6 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-
     /**
      * Where to redirect users after login.
      *
@@ -44,8 +43,7 @@ class LoginController extends Controller
         $this->guard()->logout();
         $request->session()->flush();
         $request->session()->regenerate();
+
         return redirect('/login');
-       }
-
-
+    }
 }

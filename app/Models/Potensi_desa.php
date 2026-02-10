@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Potensi_desa extends Model
 {
     use HasFactory;
-    protected $table = 'potensi_desa';
-    protected $guarded = [];
-    public $timestamps = false;
 
+    protected $table = 'potensi_desa';
+
+    protected $guarded = [];
+
+    public $timestamps = false;
 }

@@ -26,5 +26,5 @@ class PendudukImport implements ToModel, WithHeadingRow
             'rw' => $row['rw'],
             'desa' => $row['desa'],
         ]);
-}
+    }
 }

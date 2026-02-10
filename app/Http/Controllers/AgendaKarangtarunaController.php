@@ -16,20 +16,21 @@ class AgendaKarangtarunaController extends Controller
      */
     public function index(Request $request)
     {
-    $surat_ktm =Surat::where('is_read', false)->count();
-    $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
-    $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
-    $notifications_sktm = Surat::where('is_read', false)->get();
-    $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
-    $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
-    $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
+        $surat_ktm = Surat::where('is_read', false)->count();
+        $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
+        $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
+        $notifications_sktm = Surat::where('is_read', false)->get();
+        $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
+        $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
+        $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-    $agenda_karangtaruna = Agenda_karangtaruna::orderBy('created_at', 'desc')->paginate(7);
-    $cari = $request->get('keyword');
-    if ($cari) {
-        $agenda_karangtaruna = Agenda_karangtaruna::where('judul', 'LIKE', "%$cari%")->paginate(7);
-    }
-    return view('agenda_karangtaruna.index', compact('agenda_karangtaruna', 'surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        $agenda_karangtaruna = Agenda_karangtaruna::orderBy('created_at', 'desc')->paginate(7);
+        $cari = $request->get('keyword');
+        if ($cari) {
+            $agenda_karangtaruna = Agenda_karangtaruna::where('judul', 'LIKE', "%$cari%")->paginate(7);
+        }
+
+        return view('agenda_karangtaruna.index', compact('agenda_karangtaruna', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -37,7 +38,7 @@ class AgendaKarangtarunaController extends Controller
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
@@ -46,7 +47,7 @@ class AgendaKarangtarunaController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        return view('agenda_karangtaruna.create',compact('surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        return view('agenda_karangtaruna.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -65,8 +66,8 @@ class AgendaKarangtarunaController extends Controller
         $agenda_karangtaruna->content = ($request->get('content'));
         $agenda_karangtaruna->user_id = Auth::user()->id;
 
-
         $agenda_karangtaruna->save();
+
         return redirect()->route('agenda_karangtarunaindex');
     }
 
@@ -83,7 +84,7 @@ class AgendaKarangtarunaController extends Controller
      */
     public function edit($id)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
@@ -91,20 +92,20 @@ class AgendaKarangtarunaController extends Controller
         $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
-        
+
         // Try to find by ID first, then by judul for backward compatibility
         $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-        
-        if (!$agenda_karangtaruna) {
+
+        if (! $agenda_karangtaruna) {
             // If not found by ID, try by judul
             $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
         }
-        
-        if (!$agenda_karangtaruna) {
+
+        if (! $agenda_karangtaruna) {
             return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
         }
-        
-        return view('agenda_karangtaruna.edit', compact('agenda_karangtaruna','surat_ktm','surat_ku','surat_domisili','notifications'));
+
+        return view('agenda_karangtaruna.edit', compact('agenda_karangtaruna', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -114,16 +115,16 @@ class AgendaKarangtarunaController extends Controller
     {
         // Try to find by ID first, then by judul for backward compatibility
         $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-        
-        if (!$agenda_karangtaruna) {
+
+        if (! $agenda_karangtaruna) {
             // If not found by ID, try by judul
             $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
         }
-        
-        if (!$agenda_karangtaruna) {
+
+        if (! $agenda_karangtaruna) {
             return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
         }
-        
+
         $agenda_karangtaruna->judul = $request->get('judul');
         $agenda_karangtaruna->tanggal = date('Y-m-d', strtotime($request->get('tanggal')));
         $agenda_karangtaruna->jam = $request->get('jam');
@@ -132,6 +133,7 @@ class AgendaKarangtarunaController extends Controller
         $agenda_karangtaruna->content = ($request->get('content'));
 
         $agenda_karangtaruna->save();
+
         return redirect()->route('agenda_karangtarunaindex')->with('success', 'Agenda berhasil diperbarui.');
     }
 
@@ -142,17 +144,18 @@ class AgendaKarangtarunaController extends Controller
     {
         // Try to find by ID first, then by judul (title) for backward compatibility
         $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-        
-        if (!$agenda_karangtaruna) {
+
+        if (! $agenda_karangtaruna) {
             // If not found by ID, try by judul
             $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
         }
-        
+
         if ($agenda_karangtaruna) {
             $agenda_karangtaruna->delete();
+
             return redirect()->route('agenda_karangtarunaindex')->with('success', 'Agenda berhasil dihapus.');
         }
-        
+
         return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
     }
 }

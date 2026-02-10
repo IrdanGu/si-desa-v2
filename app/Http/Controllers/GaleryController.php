@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GaleryRequest;
 use App\Models\Galery;
 use App\Models\Surat;
 use App\Models\Surat_KeteranganDomisili;
@@ -17,7 +16,7 @@ class GaleryController extends Controller
      */
     public function index(Request $request)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -25,7 +24,8 @@ class GaleryController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
         $galery = Galery::all();
-        return view('galery.index', compact('galery','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+
+        return view('galery.index', compact('galery', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -33,14 +33,13 @@ class GaleryController extends Controller
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
         $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
-
 
         return view('galery.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
@@ -59,8 +58,9 @@ class GaleryController extends Controller
             $galery->gambar = $file;
         }
 
-       $galery->save();
-       return redirect()->route('galeryindex');
+        $galery->save();
+
+        return redirect()->route('galeryindex');
     }
 
     /**
@@ -76,7 +76,7 @@ class GaleryController extends Controller
      */
     public function edit($id_galery)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -84,12 +84,12 @@ class GaleryController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-
         $galery = Galery::find($id_galery);
         if ($galery === null) {
             return redirect()->route('galeryindex');
         }
-        return view('galery.edit', compact('galery','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+
+        return view('galery.edit', compact('galery', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -104,14 +104,15 @@ class GaleryController extends Controller
 
         $galery->nama = $request->get('nama');
         if ($request->file('gambar')) {
-            if ($galery->gambar && Storage::exists('public/' . $galery->gambar)) {
-                Storage::delete('public/' . $galery->gambar);
+            if ($galery->gambar && Storage::exists('public/'.$galery->gambar)) {
+                Storage::delete('public/'.$galery->gambar);
             }
             $file = $request->file('gambar')->store('gambar', 'public');
             $galery->gambar = $file;
         }
 
         $galery->save();
+
         return redirect()->route('galeryindex');
     }
 
@@ -120,11 +121,12 @@ class GaleryController extends Controller
      */
     public function destroy($id_galery)
     {
-    $galery = Galery::where('id_galery', $id_galery)->firstOrFail(); // Sesuaikan kolom primary key
-    if ($galery->gambar && Storage::exists('public/' . $galery->gambar)) {
-        Storage::delete('public/' . $galery->gambar);
+        $galery = Galery::where('id_galery', $id_galery)->firstOrFail(); // Sesuaikan kolom primary key
+        if ($galery->gambar && Storage::exists('public/'.$galery->gambar)) {
+            Storage::delete('public/'.$galery->gambar);
+        }
+        $galery->delete();
+
+        return redirect()->route('galeryindex')->with('success', 'Galeri berhasil dihapus.');
     }
-    $galery->delete();
-    return redirect()->route('galeryindex')->with('success', 'Galeri berhasil dihapus.');
-}
 }

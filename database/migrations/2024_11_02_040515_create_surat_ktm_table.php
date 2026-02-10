@@ -28,7 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kades');
             $table->string('nama_ttd');
             $table->string('ttd');
-            $table->enum('pilihsurat', ['Surat Keterangan Tidak Mampu', 'Surat Keterangan Usaha','Surat Keterangan Domisili']);
+            $table->enum('pilihsurat', ['Surat Keterangan Tidak Mampu', 'Surat Keterangan Usaha', 'Surat Keterangan Domisili']);
             $table->string('foto_ktp');
             $table->string('foto_kk');
             $table->string('permohonan');

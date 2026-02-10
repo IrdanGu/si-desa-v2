@@ -4,10 +4,8 @@ namespace App\Listeners;
 
 use App\Events\SuratCreated;
 use App\Models\User;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\AdminNotification;
+use Illuminate\Support\Facades\Notification;
 
 class SendAdminNotification
 {

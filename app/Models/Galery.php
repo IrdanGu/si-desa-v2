@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Galery extends Model
 {
     use HasFactory;
+
     protected $table = 'galery';
+
     protected $guarded = [];
+
     protected $primaryKey = 'id_galery';
 }

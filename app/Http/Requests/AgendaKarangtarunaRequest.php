@@ -30,8 +30,8 @@ class AgendaKarangtarunaRequest extends FormRequest
             'acara' => ['required', 'min:5'],
             'tempat' => ['required', 'min:5'],
 
-
         ];
+
         return $rules;
     }
 }

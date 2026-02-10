@@ -37,7 +37,8 @@ class Surat_KeteranganDomisiliController extends Controller
                 $surat__KeteranganDomisili = Surat_KeteranganDomisili::where('nik', 'LIKE', "%$cari%")->paginate(15);
             }
         }
-        return view('surat_KeteranganDomisili.index', compact('surat__KeteranganDomisili', 'surat_ktm', 'surat_ku','surat_domisili','notifications'));
+
+        return view('surat_KeteranganDomisili.index', compact('surat__KeteranganDomisili', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -69,7 +70,7 @@ class Surat_KeteranganDomisiliController extends Controller
      */
     public function edit(string $id)
     {
-        
+
     }
 
     /**
@@ -88,6 +89,7 @@ class Surat_KeteranganDomisiliController extends Controller
 
         $surat_KeteranganDomisili = Surat_KeteranganDomisili::FindOrFail($id);
         $surat_KeteranganDomisili->delete();
+
         return redirect()->route('surat_keterangandomisiliindex');
     }
 
@@ -99,6 +101,7 @@ class Surat_KeteranganDomisiliController extends Controller
         //     $ttd = public_path('storage/' . $surat_KeteranganDomisili->ttd);
 
         $pdf = Pdf::loadview('surat_KeteranganDomisili.cetak', ['surat__KeteranganDomisili' => $surat_KeteranganDomisili]);
+
         return $pdf->stream('surat_keterangan_domisili.pdf');
     }
 }

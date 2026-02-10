@@ -28,13 +28,9 @@ class AgendaRequest extends FormRequest
             'jam' => ['required', 'min:5'],
             'acara' => ['required', 'min:5'],
             'tempat' => ['required', 'min:5'],
-            
-
-
-
-
 
         ];
+
         return $rules;
     }
 }

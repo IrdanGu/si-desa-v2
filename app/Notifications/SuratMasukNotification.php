@@ -2,12 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Surat;
-use App\Models\Surat_KeteranganUsaha;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class SuratMasukNotification extends Notification
 {
@@ -30,7 +28,7 @@ class SuratMasukNotification extends Notification
         return (new MailMessage)
             ->subject('Notifikasi Surat Masuk')
             ->line('Anda memiliki surat baru yang perlu dibaca.')
-            ->action('Lihat Surat', url('/surat/' . $this->surat->id))
+            ->action('Lihat Surat', url('/surat/'.$this->surat->id))
             ->line('Terima kasih telah menggunakan layanan kami!');
     }
 
@@ -39,7 +37,7 @@ class SuratMasukNotification extends Notification
         return [
             // Data yang ingin Anda sertakan dalam notifikasi lainnya
             'surat_id' => $this->surat->id,
-            'link' => url('/surat/' . $this->surat->id),
+            'link' => url('/surat/'.$this->surat->id),
         ];
     }
 }

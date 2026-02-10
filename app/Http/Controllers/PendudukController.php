@@ -11,9 +11,8 @@ use App\Models\Surat_KeteranganDomisili;
 use App\Models\Surat_KeteranganUsaha;
 use Barryvdh\DomPDF\Facade\Pdf; // Import the PDF facade
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class PendudukController extends Controller
 {
@@ -21,52 +20,52 @@ class PendudukController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Menghitung notifikasi
-    $surat_ktm = Surat::where('is_read', false)->count();
-    $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
-    $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
+    {
+        // Menghitung notifikasi
+        $surat_ktm = Surat::where('is_read', false)->count();
+        $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
+        $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
 
-    // Mengambil data notifikasi
-    $notifications_sktm = Surat::where('is_read', false)->get();
-    $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
-    $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
-    $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
+        // Mengambil data notifikasi
+        $notifications_sktm = Surat::where('is_read', false)->get();
+        $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
+        $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
+        $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-    // Inisialisasi data penduduk
-    $penduduk = Penduduk::query();
+        // Inisialisasi data penduduk
+        $penduduk = Penduduk::query();
 
-    // Mengambil input dari request
-    $cari = $request->get('keyword');
-    $status = $request->get('status');
+        // Mengambil input dari request
+        $cari = $request->get('keyword');
+        $status = $request->get('status');
 
-    // Logika pencarian berdasarkan 'status'
-    if ($cari && $status === 'nik') {
-        $penduduk = $penduduk->where('nik', 'LIKE', "%$cari%");
-    } elseif ($cari && $status === 'no_kk') {
-        $penduduk = $penduduk->where('no_kk', 'LIKE', "%$cari%");
-    } elseif ($cari) {
-        $penduduk = $penduduk->where(function ($query) use ($cari) {
-            $query->where('nama_lengkap', 'LIKE', "%$cari%")
-                  ->orWhere('pekerjaan', 'LIKE', "%$cari%")
-                  ->orWhere('dusun', 'LIKE', "%$cari%")
-                  ->orWhere('rt', 'LIKE', "%$cari%")
-                  ->orWhere('rw', 'LIKE', "%$cari%");
-        });
+        // Logika pencarian berdasarkan 'status'
+        if ($cari && $status === 'nik') {
+            $penduduk = $penduduk->where('nik', 'LIKE', "%$cari%");
+        } elseif ($cari && $status === 'no_kk') {
+            $penduduk = $penduduk->where('no_kk', 'LIKE', "%$cari%");
+        } elseif ($cari) {
+            $penduduk = $penduduk->where(function ($query) use ($cari) {
+                $query->where('nama_lengkap', 'LIKE', "%$cari%")
+                    ->orWhere('pekerjaan', 'LIKE', "%$cari%")
+                    ->orWhere('dusun', 'LIKE', "%$cari%")
+                    ->orWhere('rt', 'LIKE', "%$cari%")
+                    ->orWhere('rw', 'LIKE', "%$cari%");
+            });
+        }
+
+        // Melakukan paginasi pada hasil pencarian
+        $penduduk = $penduduk->paginate(15);
+
+        return view('penduduk.index', compact('penduduk', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
-
-    // Melakukan paginasi pada hasil pencarian
-    $penduduk = $penduduk->paginate(15);
-
-    return view('penduduk.index', compact('penduduk', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
-}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -74,7 +73,7 @@ class PendudukController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        return view('penduduk.create', compact('surat_ktm', 'surat_ku','surat_domisili','notifications'));;
+        return view('penduduk.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -102,7 +101,6 @@ class PendudukController extends Controller
 
         return redirect()->route('pendudukindex');
 
-
     }
 
     /**
@@ -110,14 +108,15 @@ class PendudukController extends Controller
      */
     public function show($id)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $notifications_sktm = Surat::where('is_read', false)->get();
         $notifications_sku = Surat_KeteranganUsaha::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_sku);
         $penduduk = Penduduk::FindOrFail($id);
-        return view('penduduk.detail', compact('penduduk','surat_ktm', 'surat_ku', 'notifications'));
+
+        return view('penduduk.detail', compact('penduduk', 'surat_ktm', 'surat_ku', 'notifications'));
     }
 
     /**
@@ -125,7 +124,7 @@ class PendudukController extends Controller
      */
     public function edit($id)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -134,7 +133,8 @@ class PendudukController extends Controller
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
         $penduduk = Penduduk::FindOrFail($id);
-        return view('penduduk.edit', compact('penduduk','surat_ktm','surat_ku','surat_domisili','notifications'));
+
+        return view('penduduk.edit', compact('penduduk', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -171,41 +171,43 @@ class PendudukController extends Controller
     {
         $penduduk = Penduduk::FindOrFail($id);
         $penduduk->delete();
+
         return redirect()->route('pendudukindex');
 
     }
 
-
-
     public function ajax(Request $request, $nik)
     {
         $data = Penduduk::where('nik', $nik)->first();
-        if (!$data) {
+        if (! $data) {
             return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
+
         return response()->json($data);
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         return Excel::download(new ExportPenduduk, 'penduduk.xlsx');
     }
 
     public function export_pdf()
-{
-    // Debugging
-    try {
-        $penduduk = Penduduk::all();
-        // Periksa apakah data penduduk ada
-        if ($penduduk->isEmpty()) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
+    {
+        // Debugging
+        try {
+            $penduduk = Penduduk::all();
+            // Periksa apakah data penduduk ada
+            if ($penduduk->isEmpty()) {
+                return response()->json(['message' => 'No data found'], 404);
+            }
 
-        $pdf = Pdf::loadView('penduduk.pdf', compact('penduduk'));
-        return $pdf->download('data_penduduk.pdf');
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+            $pdf = Pdf::loadView('penduduk.pdf', compact('penduduk'));
+
+            return $pdf->download('data_penduduk.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-}
 
     public function import_excel(Request $request)
     {
@@ -221,9 +223,4 @@ class PendudukController extends Controller
 
         return back()->with('success', 'Data Penduduk berhasil diimpor');
     }
-
-
 }
-
-
-

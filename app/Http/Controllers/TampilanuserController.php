@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\SuratCreated;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Agenda;
 use App\Models\Agenda_karangtaruna;
 use App\Models\AparaturDesa;
-use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Galery;
 use App\Models\KepalaDesa;
@@ -17,6 +15,8 @@ use App\Models\Surat;
 use App\Models\Surat_KeteranganDomisili;
 use App\Models\Surat_KeteranganUsaha;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TampilanuserController extends Controller
@@ -34,15 +34,15 @@ class TampilanuserController extends Controller
         $berita = Berita::orderBy('created_at', 'desc')->paginate(3);
         $agenda = Agenda::orderBy('created_at', 'desc')->paginate(3);
         $agenda_karangtaruna = Agenda_karangtaruna::orderBy('created_at', 'desc')->paginate(3);
+
         return view('frontend.index', compact('berita', 'agenda', 'agenda_karangtaruna', 'jumlahkk', 'P', 'LK', 'Kpl', 'jmlpenduduk'));
     }
-
-
 
     // user berita
     public function detail_berita($slug)
     {
         $berita = Berita::where('slug', $slug)->first();
+
         return view('frontend.detail_berita', compact('berita'));
     }
 
@@ -50,14 +50,15 @@ class TampilanuserController extends Controller
     {
         $berita = Berita::latest()->get();
         $galery = Galery::latest()->get();
+
         return view('frontend.main_berita', compact('berita', 'galery'));
     }
-
 
     // user aparatur
     public function aparatur()
     {
         $aparatur_desas = AparaturDesa::all();
+
         return view('frontend.aparatur', compact('aparatur_desas'));
     }
 
@@ -73,8 +74,6 @@ class TampilanuserController extends Controller
         $rt05 = Penduduk::where('rt', '05')->count();
         $rt06 = Penduduk::where('rt', '06')->count();
         $rt07 = Penduduk::where('rt', '07')->count();
-
-
 
         // Menghitung jumlah penduduk laki-laki dan perempuan di RT '01'
         $rt01LK = Penduduk::where('rt', '01')->where('jenis_kelamin', 'LK')->count();
@@ -104,9 +103,6 @@ class TampilanuserController extends Controller
         $rt07LK = Penduduk::where('rt', '07')->where('jenis_kelamin', 'LK')->count();
         $rt07P = Penduduk::where('rt', '07')->where('jenis_kelamin', 'P')->count();
 
-
-
-
         // Menghitung pendidikan didesa mancagar
         $blm_sklh = Penduduk::where('pendidikan', 'Blm Sekolah')->count();
         $tdk_prnh_sklh = Penduduk::where('pendidikan', 'Tdk Prnh Sklh')->count();
@@ -130,7 +126,6 @@ class TampilanuserController extends Controller
         $kawin = Penduduk::where('status', 'Kawin')->count();
         $blm_kawin = Penduduk::where('status', 'Blm Kawin')->count();
         $jandud = Penduduk::where('status', 'Janda/Duda')->count();
-
 
         return view('frontend.infografis', compact(
             'infografis',
@@ -176,47 +171,50 @@ class TampilanuserController extends Controller
         ));
     }
 
-
     // user agenda
     public function main_agenda()
     {
         $agenda = Agenda::latest()->get();
         $galery = Galery::latest()->get();
+
         return view('frontend.main_agenda', compact('agenda', 'galery'));
     }
 
     public function detail_agenda($judul)
     {
         $agenda = Agenda::where('judul', $judul)->first();
+
         return view('frontend.detail_agenda', compact('agenda'));
     }
-
 
     // user agenda karangtaruna
     public function main_agenda_karangtaruna()
     {
         $agenda_karangtaruna = Agenda_karangtaruna::latest()->get();
         $galery = Galery::latest()->get();
+
         return view('frontend.main_agenda_karangtaruna', compact('agenda_karangtaruna', 'galery'));
     }
 
     public function detail_agenda_karangtaruna($judul)
     {
         $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $judul)->first();
+
         return view('frontend.detail_agenda_karangtaruna', compact('agenda_karangtaruna'));
     }
 
     public function main_galery()
     {
         $galery = Galery::latest()->get();
+
         return view('frontend.main_galery', compact('galery'));
     }
-
 
     // untuk potensi desa
     public function potensi_desa()
     {
         $potensi_desa = Potensi_desa::all();
+
         return view('frontend.potensidesa', compact('potensi_desa'));
     }
 
@@ -242,7 +240,7 @@ class TampilanuserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $surat = $request->get('pilihsurat');
-        if ($request->get('pilihsurat') === "Surat Keterangan Tidak Mampu") {
+        if ($request->get('pilihsurat') === 'Surat Keterangan Tidak Mampu') {
             $surat = new Surat();
             $surat->nik = $request->get('nik');
             $surat->no_kk = $request->get('no_kk');
@@ -276,7 +274,7 @@ class TampilanuserController extends Controller
             // $admin = Navbar::first(); // Anda bisa mengganti ini dengan logika pemilihan admin yang sesuai
             // $admin->notify(new SuratCreated($surat));
             return redirect()->route('surat')->with('status', 'Surat SKTM Berhasil Di Buat. pantau whatapp');
-        } elseif ($request->get('pilihsurat') === "Surat Keterangan Usaha") {
+        } elseif ($request->get('pilihsurat') === 'Surat Keterangan Usaha') {
             $surat = new Surat_KeteranganUsaha();
             $surat->nik = $request->get('nik');
             $surat->no_kk = $request->get('no_kk');
@@ -289,7 +287,6 @@ class TampilanuserController extends Controller
             $surat->dusun = $request->get('dusun');
             $surat->rt = $request->get('rt');
             $surat->rw = $request->get('rw');
-
 
             $surat->id_kades = 1;
 
@@ -309,8 +306,9 @@ class TampilanuserController extends Controller
             $surat->user_id = Auth::user()->id;
             $surat->is_read = false;
             $surat->save();
+
             return redirect()->route('surat')->with('status', 'Surat SKU Berhasil Di Buat. pantau whatapp');
-        } elseif ($request->get('pilihsurat') === "Surat Keterangan Domisili") {
+        } elseif ($request->get('pilihsurat') === 'Surat Keterangan Domisili') {
             $surat = new Surat_KeteranganDomisili();
             $surat->nik = $request->get('nik');
             $surat->no_kk = $request->get('no_kk');
@@ -360,30 +358,25 @@ class TampilanuserController extends Controller
 
             // }
             $surat->save();
+
             return redirect()->route('surat')->with('status', 'Surat Keterangan Domisili Berhasil Di Buat. pantau whatapp');
         }
     }
 
-
-
-
     public function update(Request $request, $id)
     {
-
 
         $surat = Surat::FindOrFail($id);
         $surat->status = 'Approve';
 
         // Kurangi jumlah notifikasi
         $surat->is_read = true;
-        $nomorSurat = Surat_KeteranganUsaha::whereYear("created_at", Carbon::now()->year)->where("status", "Approve")->count();
+        $nomorSurat = Surat_KeteranganUsaha::whereYear('created_at', Carbon::now()->year)->where('status', 'Approve')->count();
         $surat->no_surat = $nomorSurat + 1;
         $surat->save();
+
         return redirect()->route('suratindex')->with('success', 'Surat Keterangan Tidak Mampu berhasil diapprove');
     }
-
-
-
 
     public function updateSKU(Request $request, $id)
     {
@@ -392,9 +385,10 @@ class TampilanuserController extends Controller
 
         // Kurangi jumlah notifikasi
         $surat->is_read = true;
-        $nomorSurat = Surat_KeteranganUsaha::whereYear("created_at", Carbon::now()->year)->where("status", "Approve")->count();
+        $nomorSurat = Surat_KeteranganUsaha::whereYear('created_at', Carbon::now()->year)->where('status', 'Approve')->count();
         $surat->no_surat = $nomorSurat + 1;
         $surat->save();
+
         return redirect()->route('surat_keteranganusahaindex');
     }
 
@@ -404,14 +398,13 @@ class TampilanuserController extends Controller
         $surat->status = 'Approve';
         // Kurangi jumlah notifikasi
         $surat->is_read = true;
-        $nomorSurat = Surat_KeteranganDomisili::whereYear("created_at", Carbon::now()->year)->where("status", "Approve")->count();
+        $nomorSurat = Surat_KeteranganDomisili::whereYear('created_at', Carbon::now()->year)->where('status', 'Approve')->count();
         $surat->no_surat = $nomorSurat + 1;
 
         $surat->save();
+
         return redirect()->route('surat_keterangandomisiliindex');
     }
-
-
 
     // public function surat_keteranganusaha()
     // {
@@ -450,20 +443,12 @@ class TampilanuserController extends Controller
     //         }
     //     }
 
-
     //     $surat_keteranganusaha->no_hp = $request->get('no_hp');
     //     $surat_keteranganusaha->status = 'Cancel';
     //     $surat_keteranganusaha->user_id = Auth::user()->id;
     //     $surat_keteranganusaha->save();
     //     return redirect()->route('surat_keteranganusaha')->with('status', 'Surat Berhasil Di Buat. Ambil surat Anda Di Kantor Desa');
     // }
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

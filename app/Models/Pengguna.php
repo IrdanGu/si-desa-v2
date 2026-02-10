@@ -19,7 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'birthdate'
+        'birthdate',
     ];
 
     /**
@@ -34,8 +34,6 @@ class User extends Authenticatable
 
     /**
      * Get the attributes that should be cast.
-     *
-     * @return array
      */
     protected function casts(): array
     {

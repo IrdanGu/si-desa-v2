@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Surat_KeteranganUsaha extends Model
 {
     use HasFactory;
-    protected $table = 'surat__keteranganusaha';
-    protected $guarded = [];
 
+    protected $table = 'surat__keteranganusaha';
+
+    protected $guarded = [];
 
     public function user()
     {

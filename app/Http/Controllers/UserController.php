@@ -9,7 +9,6 @@ use App\Models\Surat_KeteranganUsaha;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
 class UserController extends Controller
 {
     /**
@@ -17,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
@@ -28,7 +27,7 @@ class UserController extends Controller
 
         $user = User::all();
 
-        return view('user.index', compact('user', 'surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        return view('user.index', compact('user', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -36,7 +35,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -44,7 +43,7 @@ class UserController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        return view('user.create',compact('surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        return view('user.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -53,12 +52,13 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
 
-        $user =  new User;
+        $user = new User;
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
         $user->level = $request->get('level');
         $user->save();
+
         return redirect()->route('userindex');
     }
 

@@ -16,7 +16,7 @@ class KepaladesaControler extends Controller
      */
     public function index(Request $request)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -24,7 +24,8 @@ class KepaladesaControler extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
         $kepaladesa = KepalaDesa::all();
-        return view('kepaladesa.index', compact('kepaladesa','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+
+        return view('kepaladesa.index', compact('kepaladesa', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
 
     /**
@@ -32,14 +33,13 @@ class KepaladesaControler extends Controller
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
         $notifications_ku = Surat_KeteranganUsaha::where('is_read', false)->get();
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
-
 
         return view('kepaladesa.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
     }
@@ -54,14 +54,14 @@ class KepaladesaControler extends Controller
         $kepaladesa->id = $id;
         $kepaladesa->nama_ttd = $request->get('nama_ttd');
 
-
         if ($request->file('ttd')) {
             $file = $request->file('ttd')->store('gambar', 'public');
             $kepaladesa->ttd = $file;
         }
 
-       $kepaladesa->save();
-       return redirect()->route('kepaladesaindex');
+        $kepaladesa->save();
+
+        return redirect()->route('kepaladesaindex');
     }
 
     /**
@@ -77,7 +77,7 @@ class KepaladesaControler extends Controller
      */
     public function edit(string $id)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -86,7 +86,7 @@ class KepaladesaControler extends Controller
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
         $kepaladesa = KepalaDesa::findOrFail($id);
 
-        return view('kepaladesa.edit', compact('kepaladesa','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        return view('kepaladesa.edit', compact('kepaladesa', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
 
     }
 
@@ -102,14 +102,15 @@ class KepaladesaControler extends Controller
 
         $kepaladesa->nama_ttd = $request->get('nama_ttd');
         if ($request->file('ttd')) {
-            if ($kepaladesa->ttd && Storage::exists('public/' . $kepaladesa->ttd)) {
-                Storage::delete('public/' . $kepaladesa->ttd);
+            if ($kepaladesa->ttd && Storage::exists('public/'.$kepaladesa->ttd)) {
+                Storage::delete('public/'.$kepaladesa->ttd);
             }
             $file = $request->file('ttd')->store('gambar', 'public');
             $kepaladesa->ttd = $file;
         }
 
         $kepaladesa->save();
+
         return redirect()->route('kepaladesaindex');
     }
 
@@ -119,10 +120,11 @@ class KepaladesaControler extends Controller
     public function destroy($id)
     {
         $kepaladesa = KepalaDesa::where('id_galery', $id)->firstOrFail(); // Sesuaikan kolom primary key
-        if ($kepaladesa->ttd && Storage::exists('public/' . $kepaladesa->ttd)) {
-            Storage::delete('public/' . $kepaladesa->ttd);
+        if ($kepaladesa->ttd && Storage::exists('public/'.$kepaladesa->ttd)) {
+            Storage::delete('public/'.$kepaladesa->ttd);
         }
         $kepaladesa->delete();
+
         return redirect()->route('galeryindex')->with('success', 'Galeri berhasil dihapus.');
     }
 }

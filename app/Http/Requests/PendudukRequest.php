@@ -36,14 +36,12 @@ class PendudukRequest extends FormRequest
             'rw' => ['required', 'min:2', 'max:8'],
             'desa' => ['required', 'min:2', 'max:8'],
 
-
-
-
         ];
 
         if (request()->isMethod('POST')) {
             $rules['nik'] = ['required', 'min:16', 'max:20', 'unique:penduduk,nik'];
         }
+
         return $rules;
     }
 }

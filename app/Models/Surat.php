@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Surat extends Model
 {
     use HasFactory;
-    protected $table = 'surat';
-    protected $guarded = [];
 
+    protected $table = 'surat';
+
+    protected $guarded = [];
 
     public function user()
     {

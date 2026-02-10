@@ -11,10 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
 {
-
     public function index(Request $request)
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
         $notifications_sktm = Surat::where('is_read', false)->get();
@@ -22,12 +21,13 @@ class AgendaController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-    $agenda = Agenda::orderBy('created_at', 'desc')->paginate(7);
-    $cari = $request->get('keyword');
-    if ($cari) {
-        $agenda = Agenda::where('judul', 'LIKE', "%$cari%")->paginate(7);
-    }
-    return view('agenda.index', compact('agenda','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        $agenda = Agenda::orderBy('created_at', 'desc')->paginate(7);
+        $cari = $request->get('keyword');
+        if ($cari) {
+            $agenda = Agenda::where('judul', 'LIKE', "%$cari%")->paginate(7);
+        }
+
+        return view('agenda.index', compact('agenda', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
 
     }
 
@@ -36,7 +36,7 @@ class AgendaController extends Controller
      */
     public function create()
     {
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
@@ -45,7 +45,7 @@ class AgendaController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        return view('agenda.create', compact('surat_ktm', 'surat_ku','surat_domisili','notifications'));
+        return view('agenda.create', compact('surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
 
     }
 
@@ -65,8 +65,8 @@ class AgendaController extends Controller
         $agenda->content = ($request->get('content'));
         $agenda->user_id = Auth::user()->id;
 
-
         $agenda->save();
+
         return redirect()->route('agendaindex');
     }
 
@@ -84,7 +84,7 @@ class AgendaController extends Controller
     public function edit($id)
     {
 
-        $surat_ktm =Surat::where('is_read', false)->count();
+        $surat_ktm = Surat::where('is_read', false)->count();
         $surat_ku = Surat_KeteranganUsaha::where('is_read', false)->count();
 
         $surat_domisili = Surat_KeteranganDomisili::where('is_read', false)->count();
@@ -94,7 +94,8 @@ class AgendaController extends Controller
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
         $agenda = Agenda::findOrFail($id);
-        return view('agenda.edit', compact('agenda','surat_ktm', 'surat_ku','surat_domisili','notifications'));
+
+        return view('agenda.edit', compact('agenda', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
 
     }
 
@@ -112,6 +113,7 @@ class AgendaController extends Controller
         $agenda->content = ($request->get('content'));
 
         $agenda->save();
+
         return redirect()->route('agendaindex');
 
     }
@@ -123,6 +125,7 @@ class AgendaController extends Controller
     {
         $agenda = Agenda::where('judul', $judul)->first();
         $agenda->delete();
+
         return redirect()->route('agendaindex');
     }
 }

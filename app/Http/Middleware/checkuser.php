@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Middleware;
-use Illuminate\Foundation\Auth;
+
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class checkuser
 {
@@ -29,8 +28,8 @@ class checkuser
                 return $next($request);
             }
 
-             // Izinkan akses untuk karangtaruna ke rute tertentu
-             if (Auth()->user()->level == 'user') {
+            // Izinkan akses untuk karangtaruna ke rute tertentu
+            if (Auth()->user()->level == 'user') {
                 return $next($request);
             }
         }

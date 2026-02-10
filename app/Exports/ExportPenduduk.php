@@ -9,17 +9,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class ExportPenduduk implements FromCollection, WithHeadings
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        return Penduduk::select("no_kk", "nik", "nama_lengkap", "jenis_kelamin", "hubungan", "tempat_lahir", "tanggal_lahir", "status", "pendidikan", "pekerjaan", "dusun", "rt", "rw")->get();
+        return Penduduk::select('no_kk', 'nik', 'nama_lengkap', 'jenis_kelamin', 'hubungan', 'tempat_lahir', 'tanggal_lahir', 'status', 'pendidikan', 'pekerjaan', 'dusun', 'rt', 'rw')->get();
 
     }
 
     public function headings(): array
     {
-        return[
+        return [
             'Nomor KK',
             'NIK',
             'Nama Lengkap',
@@ -32,7 +32,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
             'Pekerjaan',
             'Dusun',
             'Rt',
-            'Rw'
+            'Rw',
         ];
     }
 }

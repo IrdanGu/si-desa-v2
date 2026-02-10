@@ -4,47 +4,39 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AgendaKarangtarunaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\UserRegisterController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StrukturDesaController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GaleryController;
+use App\Http\Controllers\KepaladesaControler;
 use App\Http\Controllers\Navbar_Controller;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\PotensiDesaController;
+use App\Http\Controllers\StrukturDesaController;
+use App\Http\Controllers\Surat_KeteranganDomisiliController;
 use App\Http\Controllers\Surat_KeteranganUsahaController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\TampilanuserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
-
-use App\Http\Controllers\EmailNotificationController;
-use App\Http\Controllers\KepaladesaControler;
-use App\Http\Controllers\Surat_KeteranganDomisiliController;
-use App\Mail\SuratMasukNotification;
 use Illuminate\Support\Facades\Mail;
-
-
-
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     mail::to('agungrizki640@gmail.com')
         ->send(new \App\Mail\PostMail('Mengirim Email Menggunakan Gmail SMTP Laravel 8', 'Anugrah Sandi'));
+
     return 'Terkirim';
 });
 
-
-
 Route::get('/kontak', function () {
     return view('frontend/kontak', [
-        "title" => "Kontak kami"
+        'title' => 'Kontak kami',
     ]);
 });
 
 Route::get('/panduan', function () {
     return view('frontend/panduan ', [
-        "title" => "Panduan kami"
+        'title' => 'Panduan kami',
     ]);
 });
 
@@ -53,22 +45,21 @@ Route::get('/e-learning/hidup-sehat', [App\Http\Controllers\ELearningController:
 Route::get('/e-learning/pengolahan-sampah', [App\Http\Controllers\ELearningController::class, 'pengolahanSampah']);
 Route::get('/e-learning/manajemen-keuangan', [App\Http\Controllers\ELearningController::class, 'manajemenKeuangan']);
 
-
 Route::get('/visimisi', function () {
     return view('frontend/visimisi', [
-        "title" => "Visi dan Misi"
+        'title' => 'Visi dan Misi',
     ]);
 });
 
 Route::get('/potensidesa', function () {
     return view('frontend/potensidesa', [
-        "title" => "potensidesa"
+        'title' => 'potensidesa',
     ]);
 });
 
 Route::get('/login', function () {
     return view('auth/login', [
-        "title" => "login"
+        'title' => 'login',
     ]);
 });
 
@@ -78,19 +69,14 @@ Route::get('/login', function () {
 //     ]);
 // });
 
-
-
-
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //umport data peduduk
-
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // web.php
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 
 Auth::routes(['register' => false]);
 
@@ -98,10 +84,8 @@ Auth::routes(['register' => false]);
 Route::get('/register/user', [UserRegisterController::class, 'showRegisterForm'])->name('register.user');
 Route::post('/register/user', [UserRegisterController::class, 'register'])->name('register.user.submit');
 
-
-
 Route::group([
-    'prefix' => 'agenda_karangtaruna'
+    'prefix' => 'agenda_karangtaruna',
 ], function () {
     Route::get('index', [AgendaKarangtarunaController::class, 'index'])->name('agenda_karangtarunaindex');
     Route::get('create', [AgendaKarangtarunaController::class, 'create'])->name('agenda_karangtarunacreate');
@@ -112,7 +96,7 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'agenda'
+    'prefix' => 'agenda',
 ], function () {
     Route::get('index', [AgendaController::class, 'index'])->name('agendaindex');
     Route::get('create', [AgendaController::class, 'create'])->name('agendacreate');
@@ -122,9 +106,8 @@ Route::group([
     Route::delete('delete/{judul}', [AgendaController::class, 'destroy'])->name('agendadelete');
 });
 
-
 Route::group([
-    'prefix' => 'berita'
+    'prefix' => 'berita',
 ], function () {
     Route::get('index', [BeritaController::class, 'index'])->name('beritaindex');
     Route::get('create', [BeritaController::class, 'create'])->name('beritacreate');
@@ -134,12 +117,6 @@ Route::group([
     Route::delete('delete/{slug}', [BeritaController::class, 'destroy'])->name('beritadelete');
 });
 
-
-
-
-
-
-
 // route untuk surat  di halaman user
 Route::get('surat', [TampilanuserController::class, 'surat'])->name('surat');
 Route::post('store', [TampilanuserController::class, 'store'])->name('suratsimpan');
@@ -147,13 +124,10 @@ Route::put('store/update/{id}', [TampilanuserController::class, 'update'])->name
 Route::put('store/updateSKU/{id}', [TampilanuserController::class, 'updateSKU'])->name('suratupdateSKU');
 Route::put('store/updateSKD/{id}', [TampilanuserController::class, 'updateSKD'])->name('suratupdateSKD');
 
-
-
 //navbar admin
 Route::get('/navbar-data', [Navbar_Controller::class, 'getSuratCount'])->name('navbar.data');
 Route::get('/navbar', [Navbar_Controller::class, 'navbar'])->name('navbar');
 Route::post('/notification/read', [Navbar_Controller::class, 'markNotificationAsRead'])->name('notification.read');
-
 
 // ini route untuk halaman user frontend
 Route::get('/', [TampilanuserController::class, 'index'])->name('indexuser');
@@ -168,11 +142,6 @@ Route::get('/galery', [TampilanuserController::class, 'main_galery'])->name('gal
 Route::get('/potensidesa', [TampilanuserController::class, 'potensi_desa'])->name('potensi_desa');
 Route::get('/infografis', [TampilanuserController::class, 'infografis'])->name('penduduk');
 
-
-
-
-
-
 //midleware login admin dan karangtaruna
 
 //admin
@@ -181,14 +150,8 @@ Route::group(['middleware' => 'admin'], function () {
     // halaman dashboard admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
-
-
-
-
-
     Route::group([
-        'prefix' => 'dataaparatur'
+        'prefix' => 'dataaparatur',
     ], function () {
         Route::get('index', [StrukturDesaController::class, 'index'])->name('aparaturindex');
         Route::get('create', [StrukturDesaController::class, 'create'])->name('aparaturcreate');
@@ -199,7 +162,7 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
-        'prefix' => 'penduduk'
+        'prefix' => 'penduduk',
     ], function () {
         Route::get('index', [PendudukController::class, 'index'])->name('pendudukindex');
         Route::get('create', [PendudukController::class, 'create'])->name('pendudukcreate');
@@ -217,7 +180,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('penduduk/{nik}', [PendudukController::class, 'ajax']);
 
     Route::group([
-        'prefix' => 'berita'
+        'prefix' => 'berita',
     ], function () {
         Route::get('index', [BeritaController::class, 'index'])->name('beritaindex');
         Route::get('create', [BeritaController::class, 'create'])->name('beritacreate');
@@ -227,18 +190,8 @@ Route::group(['middleware' => 'admin'], function () {
         Route::delete('delete/{slug}', [BeritaController::class, 'destroy'])->name('beritadelete');
     });
 
-
-
-
-
-
-
-
-
-
-
     Route::group([
-        'prefix' => 'agenda'
+        'prefix' => 'agenda',
     ], function () {
         Route::get('index', [AgendaController::class, 'index'])->name('agendaindex');
         Route::get('create', [AgendaController::class, 'create'])->name('agendacreate');
@@ -249,7 +202,7 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
-        'prefix' => 'agenda_karangtaruna'
+        'prefix' => 'agenda_karangtaruna',
     ], function () {
         Route::get('index', [AgendaKarangtarunaController::class, 'index'])->name('agenda_karangtarunaindex');
         Route::get('create', [AgendaKarangtarunaController::class, 'create'])->name('agenda_karangtarunacreate');
@@ -259,9 +212,8 @@ Route::group(['middleware' => 'admin'], function () {
         Route::delete('delete/{id}', [AgendaKarangtarunaController::class, 'destroy'])->name('agenda_karangtarunadelete');
     });
 
-
     Route::group([
-        'prefix' => 'potensi_desa'
+        'prefix' => 'potensi_desa',
     ], function () {
         Route::get('index', [PotensiDesaController::class, 'index'])->name('potensi_desaindex');
         Route::get('create', [PotensiDesaController::class, 'create'])->name('potensi_desacreate');
@@ -272,7 +224,7 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
-        'prefix' => 'galery'
+        'prefix' => 'galery',
     ], function () {
         Route::get('index', [GaleryController::class, 'index'])->name('galeryindex');
         Route::get('create', [GaleryController::class, 'create'])->name('galerycreate');
@@ -283,7 +235,7 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
-        'prefix' => 'kepaladesa'
+        'prefix' => 'kepaladesa',
     ], function () {
         Route::get('index', [KepaladesaControler::class, 'index'])->name('kepaladesaindex');
         Route::get('create', [KepaladesaControler::class, 'create'])->name('kepaladesacreate');
@@ -293,14 +245,10 @@ Route::group(['middleware' => 'admin'], function () {
         Route::delete('delete/{id}', [KepaladesaControler::class, 'destroy'])->name('kepaladesadelete');
     });
 
-
-
-
-
     //surat Keterangan Tidak Mampu
 
     Route::group([
-        'prefix' => 'surat'
+        'prefix' => 'surat',
     ], function () {
         Route::get('index', [SuratController::class, 'index'])->name('suratindex');
         Route::get('create', [SuratController::class, 'create'])->name('suratcreate');
@@ -311,9 +259,8 @@ Route::group(['middleware' => 'admin'], function () {
         Route::get('cetak_surat/{id}', [SuratController::class, 'cetak_surat'])->name('suratcetak');
     });
 
-
     Route::group([
-        'prefix' => 'user'
+        'prefix' => 'user',
     ], function () {
         Route::get('index', [UserController::class, 'index'])->name('userindex');
         Route::get('create', [UserController::class, 'create'])->name('usercreate');
@@ -321,21 +268,21 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
-        'prefix' => 'surat_keteranganusaha'
+        'prefix' => 'surat_keteranganusaha',
     ], function () {
         Route::get('index', [Surat_KeteranganUsahaController::class, 'index'])->name('surat_keteranganusahaindex');
         Route::get('cetak_surat/{id}', [Surat_KeteranganUsahaController::class, 'cetak_surat'])->name('surat_keteranganusahacetak');
     });
 
     Route::group([
-        'prefix' => 'surat_keterangandomisili'
+        'prefix' => 'surat_keterangandomisili',
     ], function () {
         Route::get('index', [Surat_KeteranganDomisiliController::class, 'index'])->name('surat_keterangandomisiliindex');
         Route::delete('delete/{id}', [Surat_KeteranganDomisiliController::class, 'destroy'])->name('surat_keterangandomisilidelete');
         Route::get('cetak_surat/{id}', [Surat_KeteranganDomisiliController::class, 'cetak_surat'])->name('surat_keterangandomisilicetak');
     });
 
-    //     // ini route untuk halaman user frontend
+    // ini route untuk halaman user frontend
     // Route::get('/', [TampilanuserController::class, 'index'])->name('indexuser');
     // Route::get('berita/{slug}', [TampilanuserController::class, 'detail_berita'])->name('berita_detail');
     // Route::get('/userberita', [TampilanuserController::class, 'main_berita'])->name('berita_main');
@@ -347,12 +294,7 @@ Route::group(['middleware' => 'admin'], function () {
     // Route::get('/galery', [TampilanuserController::class, 'main_galery'])->name('galery_main');
     // Route::get('/potensidesa', [TampilanuserController::class, 'potensi_desa'])->name('potensi_desa');
 
-
-
-
-
 });
-
 
 //karangtaruna
 Route::group(['middleware' => 'checkuser'], function () {
@@ -360,7 +302,7 @@ Route::group(['middleware' => 'checkuser'], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group([
-        'prefix' => 'agenda_karangtaruna'
+        'prefix' => 'agenda_karangtaruna',
     ], function () {
         Route::get('index', [AgendaKarangtarunaController::class, 'index'])->name('agenda_karangtarunaindex');
         Route::get('create', [AgendaKarangtarunaController::class, 'create'])->name('agenda_karangtarunacreate');
@@ -371,7 +313,7 @@ Route::group(['middleware' => 'checkuser'], function () {
     });
 
     Route::group([
-        'prefix' => 'berita'
+        'prefix' => 'berita',
     ], function () {
         Route::get('index', [BeritaController::class, 'index'])->name('beritaindex');
         Route::get('create', [BeritaController::class, 'create'])->name('beritacreate');
