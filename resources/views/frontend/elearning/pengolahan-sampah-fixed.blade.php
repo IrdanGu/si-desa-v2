@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="article-nav" style="margin-bottom: 30px;">
-                        <a href="{{ url('/e-learning') }}" class="btn btn-primary" style="margin-right: 10px;">
+                        <a href="{{ route('elearning.index') }}" class="btn btn-primary" style="margin-right: 10px;">
                             <i class="fa fa-chevron-left"></i> Kembali ke E-Learning
                         </a>
                     </div>
@@ -208,13 +208,22 @@
             <div class="row">
                 <div class="col-lg-12 mb-4">
                     <h3 class="border-bottom-title">Video Tutorial Lengkap</h3>
-                    <div class="video-container"
-                        style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 50%; margin: 0 auto;">
-                        <video controls width="100%">
-                            <source src="{{ asset('vidio/Tutorial.mp4') }}" type="video/mp4">
-                            Browser Anda tidak mendukung tag video.
-                        </video>
-                    </div>
+                    @php
+                        $videoPath = public_path('vidio/Tutorial.mp4');
+                    @endphp
+                    @if (file_exists($videoPath))
+                        <div class="video-container"
+                            style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 50%; margin: 0 auto;">
+                            <video controls width="100%">
+                                <source src="{{ asset('vidio/Tutorial.mp4') }}" type="video/mp4">
+                                Browser Anda tidak mendukung tag video.
+                            </video>
+                        </div>
+                    @else
+                        <div class="alert alert-warning text-center" style="width: 60%; margin: 0 auto;">
+                            Video tutorial belum tersedia. Silakan cek kembali nanti.
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -710,7 +719,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="article-footer text-center">
-                        <a href="{{ url('/e-learning') }}" class="btn btn-primary">Kembali ke E-Learning</a>
+                        <a href="{{ route('elearning.index') }}" class="btn btn-primary">Kembali ke E-Learning</a>
                     </div>
                 </div>
             </div>

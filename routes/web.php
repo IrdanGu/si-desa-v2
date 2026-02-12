@@ -11,6 +11,8 @@ use App\Http\Controllers\KepaladesaControler;
 use App\Http\Controllers\Navbar_Controller;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\PotensiDesaController;
+use App\Http\Controllers\ProductCatalogController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StrukturDesaController;
 use App\Http\Controllers\Surat_KeteranganDomisiliController;
 use App\Http\Controllers\Surat_KeteranganUsahaController;
@@ -35,15 +37,15 @@ Route::get('/kontak', function () {
 });
 
 Route::get('/panduan', function () {
-    return view('frontend/panduan ', [
+    return view('frontend/panduan', [
         'title' => 'Panduan kami',
     ]);
 });
 
-Route::get('/e-learning', [App\Http\Controllers\ELearningController::class, 'index']);
-Route::get('/e-learning/hidup-sehat', [App\Http\Controllers\ELearningController::class, 'hidupSehat']);
-Route::get('/e-learning/pengolahan-sampah', [App\Http\Controllers\ELearningController::class, 'pengolahanSampah']);
-Route::get('/e-learning/manajemen-keuangan', [App\Http\Controllers\ELearningController::class, 'manajemenKeuangan']);
+Route::get('/e-learning', [App\Http\Controllers\ELearningController::class, 'index'])->name('elearning.index');
+Route::get('/e-learning/hidup-sehat', [App\Http\Controllers\ELearningController::class, 'hidupSehat'])->name('elearning.hidup-sehat');
+Route::get('/e-learning/pengolahan-sampah', [App\Http\Controllers\ELearningController::class, 'pengolahanSampah'])->name('elearning.pengolahan-sampah');
+Route::get('/e-learning/manajemen-keuangan', [App\Http\Controllers\ELearningController::class, 'manajemenKeuangan'])->name('elearning.manajemen-keuangan');
 
 Route::get('/visimisi', function () {
     return view('frontend/visimisi', [
@@ -141,11 +143,13 @@ Route::get('agenda_karangtaruna/{judul}', [TampilanuserController::class, 'detai
 Route::get('/galery', [TampilanuserController::class, 'main_galery'])->name('galery_main');
 Route::get('/potensidesa', [TampilanuserController::class, 'potensi_desa'])->name('potensi_desa');
 Route::get('/infografis', [TampilanuserController::class, 'infografis'])->name('penduduk');
+Route::get('/produk', [ProductCatalogController::class, 'index'])->name('produk.index');
+Route::get('/produk/{slug}', [ProductCatalogController::class, 'show'])->name('produk.show');
 
 //midleware login admin dan karangtaruna
 
 //admin
-Route::group(['middleware' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'admin']], function () {
 
     // halaman dashboard admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -268,6 +272,17 @@ Route::group(['middleware' => 'admin'], function () {
     });
 
     Route::group([
+        'prefix' => 'products',
+    ], function () {
+        Route::get('index', [ProductController::class, 'index'])->name('products.index');
+        Route::get('create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('store', [ProductController::class, 'store'])->name('products.store');
+        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('store/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('delete/{id}', [ProductController::class, 'destroy'])->name('products.delete');
+    });
+
+    Route::group([
         'prefix' => 'surat_keteranganusaha',
     ], function () {
         Route::get('index', [Surat_KeteranganUsahaController::class, 'index'])->name('surat_keteranganusahaindex');
@@ -297,7 +312,7 @@ Route::group(['middleware' => 'admin'], function () {
 });
 
 //karangtaruna
-Route::group(['middleware' => 'checkuser'], function () {
+Route::group(['middleware' => ['auth', 'checkuser']], function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

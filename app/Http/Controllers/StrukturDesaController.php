@@ -104,8 +104,8 @@ class StrukturDesaController extends Controller
 
         if ($request->file('gambar_struktur')) {
             // Hapus gambar lama jika ada
-            if ($aparatur_desas->gambar_struktur && Storage::exists('public/'.$aparatur_desas->gambar_struktur)) {
-                Storage::delete('public/'.$aparatur_desas->gambar_struktur);
+            if ($aparatur_desas->gambar_struktur && Storage::disk('public')->exists($aparatur_desas->gambar_struktur)) {
+                Storage::disk('public')->delete($aparatur_desas->gambar_struktur);
             }
 
             // Simpan gambar baru dengan nama asli
@@ -125,8 +125,10 @@ class StrukturDesaController extends Controller
     public function destroy($id)
     {
 
-        $aparatur_desas = aparaturdesa::findfOrFail($id);
-        Storage::delete('public/'.$aparatur_desas->gambar_struktur);
+        $aparatur_desas = aparaturdesa::findOrFail($id);
+        if ($aparatur_desas->gambar_struktur && Storage::disk('public')->exists($aparatur_desas->gambar_struktur)) {
+            Storage::disk('public')->delete($aparatur_desas->gambar_struktur);
+        }
         $aparatur_desas->delete();
 
         return redirect()->route('aparaturindex');

@@ -27,7 +27,7 @@ class ELearningController extends Controller
 
     public function manajemenKeuangan()
     {
-        return view('frontend.elearning.Manajemen-Keuangan', [
+        return view('frontend.elearning.manajemen-keuangan', [
             'title' => 'Manajemen Keuangan Rumah Tangga',
         ]);
     }

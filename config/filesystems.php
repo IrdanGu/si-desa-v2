@@ -38,7 +38,9 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            // Keep uploads under public/storage so assets are directly served
+            // in this project setup (without relying on a symlink).
+            'root' => public_path('storage'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

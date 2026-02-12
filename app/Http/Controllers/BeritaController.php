@@ -116,8 +116,8 @@ class BeritaController extends Controller
         $berita->slug = str::slug($judul);
         $berita->content = ($request->get('content'));
         if ($request->file('gambar')) {
-            if ($berita->gambar && file_exists(storage_path('app/public/'.$berita->gambar))) {
-                Storage::delete('public/'.$berita->gambar);
+            if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
+                Storage::disk('public')->delete($berita->gambar);
             }
             $file = $request->file('gambar')->store('gambar', 'public');
             $berita->gambar = $file;
@@ -133,7 +133,9 @@ class BeritaController extends Controller
     public function destroy($slug)
     {
         $berita = Berita::where('slug', $slug)->first();
-        Storage::delete('public/'.$berita->gambar);
+        if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
+            Storage::disk('public')->delete($berita->gambar);
+        }
         $berita->delete();
 
         return redirect()->route('beritaindex');

@@ -102,8 +102,8 @@ class KepaladesaControler extends Controller
 
         $kepaladesa->nama_ttd = $request->get('nama_ttd');
         if ($request->file('ttd')) {
-            if ($kepaladesa->ttd && Storage::exists('public/'.$kepaladesa->ttd)) {
-                Storage::delete('public/'.$kepaladesa->ttd);
+            if ($kepaladesa->ttd && Storage::disk('public')->exists($kepaladesa->ttd)) {
+                Storage::disk('public')->delete($kepaladesa->ttd);
             }
             $file = $request->file('ttd')->store('gambar', 'public');
             $kepaladesa->ttd = $file;
@@ -119,12 +119,12 @@ class KepaladesaControler extends Controller
      */
     public function destroy($id)
     {
-        $kepaladesa = KepalaDesa::where('id_galery', $id)->firstOrFail(); // Sesuaikan kolom primary key
-        if ($kepaladesa->ttd && Storage::exists('public/'.$kepaladesa->ttd)) {
-            Storage::delete('public/'.$kepaladesa->ttd);
+        $kepaladesa = KepalaDesa::where('id', $id)->firstOrFail();
+        if ($kepaladesa->ttd && Storage::disk('public')->exists($kepaladesa->ttd)) {
+            Storage::disk('public')->delete($kepaladesa->ttd);
         }
         $kepaladesa->delete();
 
-        return redirect()->route('galeryindex')->with('success', 'Galeri berhasil dihapus.');
+        return redirect()->route('kepaladesaindex')->with('success', 'Data kepala desa berhasil dihapus.');
     }
 }

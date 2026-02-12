@@ -104,8 +104,8 @@ class GaleryController extends Controller
 
         $galery->nama = $request->get('nama');
         if ($request->file('gambar')) {
-            if ($galery->gambar && Storage::exists('public/'.$galery->gambar)) {
-                Storage::delete('public/'.$galery->gambar);
+            if ($galery->gambar && Storage::disk('public')->exists($galery->gambar)) {
+                Storage::disk('public')->delete($galery->gambar);
             }
             $file = $request->file('gambar')->store('gambar', 'public');
             $galery->gambar = $file;
@@ -122,8 +122,8 @@ class GaleryController extends Controller
     public function destroy($id_galery)
     {
         $galery = Galery::where('id_galery', $id_galery)->firstOrFail(); // Sesuaikan kolom primary key
-        if ($galery->gambar && Storage::exists('public/'.$galery->gambar)) {
-            Storage::delete('public/'.$galery->gambar);
+        if ($galery->gambar && Storage::disk('public')->exists($galery->gambar)) {
+            Storage::disk('public')->delete($galery->gambar);
         }
         $galery->delete();
 

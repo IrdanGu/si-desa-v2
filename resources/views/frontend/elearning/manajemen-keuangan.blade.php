@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="article-nav" style="margin-bottom: 30px;">
-                        <a href="{{ url('/e-learning') }}" class="btn btn-primary" style="margin-right: 10px;">
+                        <a href="{{ route('elearning.index') }}" class="btn btn-primary" style="margin-right: 10px;">
                             <i class="fa fa-chevron-left"></i> Kembali ke E-Learning
                         </a>
                     </div>
@@ -413,7 +413,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="article-footer text-center" style="margin-top: 30px;">
-                        <a href="{{ url('/e-learning') }}" class="btn btn-primary">Kembali ke E-Learning</a>
+                        <a href="{{ route('elearning.index') }}" class="btn btn-primary">Kembali ke E-Learning</a>
                     </div>
                 </div>
             </div>

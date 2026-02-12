@@ -122,6 +122,7 @@
                                 </li>
 
                                 <li><a href="/galery">Galeri</a></li>
+                                <li><a href="/produk">Produk</a></li>
 
                                 <li><a href="/kontak">Kontak Kami</a></li>
                                 <li><a href="/panduan">Panduan</a></li>

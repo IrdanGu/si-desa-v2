@@ -114,8 +114,8 @@ class PotensiDesaController extends Controller
         $potensi_desa->slug = str::slug($judul);
         $potensi_desa->content = ($request->get('content'));
         if ($request->file('gambar')) {
-            if ($potensi_desa->gambar && file_exists(storage_path('app/public/'.$potensi_desa->gambar))) {
-                Storage::delete('public/'.$potensi_desa->gambar);
+            if ($potensi_desa->gambar && Storage::disk('public')->exists($potensi_desa->gambar)) {
+                Storage::disk('public')->delete($potensi_desa->gambar);
             }
             $file = $request->file('gambar')->store('gambar', 'public');
             $potensi_desa->gambar = $file;
@@ -131,7 +131,9 @@ class PotensiDesaController extends Controller
     public function destroy($slug)
     {
         $potensi_desa = Potensi_desa::where('slug', $slug)->first();
-        Storage::delete('public/'.$potensi_desa->gambar);
+        if ($potensi_desa->gambar && Storage::disk('public')->exists($potensi_desa->gambar)) {
+            Storage::disk('public')->delete($potensi_desa->gambar);
+        }
         $potensi_desa->delete();
 
         return redirect()->route('potensi_desaindex');

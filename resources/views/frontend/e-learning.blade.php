@@ -56,7 +56,7 @@
                                     style="width: 20px; margin-right: 10px;">
                                 <span style="color: #777;">1-2 jam</span>
                             </div>
-                            <a href="{{ url('/e-learning/hidup-sehat') }}" class="btn btn-primary"
+                            <a href="{{ route('elearning.hidup-sehat') }}" class="btn btn-primary"
                                 style="background-color: #6878df; border: none; padding: 8px 20px; border-radius: 5px;">Mulai
                                 Belajar</a>
                         </div>
@@ -81,7 +81,7 @@
                                     style="width: 20px; margin-right: 10px;">
                                 <span style="color: #777;">1-2 jam</span>
                             </div>
-                            <a href="{{ url('/e-learning/pengolahan-sampah') }}" class="btn btn-success"
+                            <a href="{{ route('elearning.pengolahan-sampah') }}" class="btn btn-success"
                                 style="background-color: #42b883; border: none; padding: 8px 20px; border-radius: 5px;">Pelajari
                                 Sekarang</a>
                         </div>
@@ -106,7 +106,7 @@
                                     style="width: 20px; margin-right: 10px;">
                                 <span style="color: #777;">1-2 jam</span>
                             </div>
-                            <a href="{{ url('/e-learning/manajemen-keuangan') }}" class="btn btn-warning"
+                            <a href="{{ route('elearning.manajemen-keuangan') }}" class="btn btn-warning"
                                 style="background-color: #ffd66b; border: none; padding: 8px 20px; border-radius: 5px; color: #333;">Pelajari
                                 Sekarang</a>
                         </div>
