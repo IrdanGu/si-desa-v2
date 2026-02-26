@@ -19,6 +19,7 @@ use App\Http\Controllers\Surat_KeteranganUsahaController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\TampilanuserController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChatbotController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -297,6 +298,20 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::get('cetak_surat/{id}', [Surat_KeteranganDomisiliController::class, 'cetak_surat'])->name('surat_keterangandomisilicetak');
     });
 
+    // Chatbot Admin Routes
+    Route::group([
+        'prefix' => 'chatbot',
+        'as' => 'chatbot.',
+    ], function () {
+        Route::get('faq', [App\Http\Controllers\ChatbotFaqController::class, 'index'])->name('faq.index');
+        Route::get('faq/create', [App\Http\Controllers\ChatbotFaqController::class, 'create'])->name('faq.create');
+        Route::post('faq', [App\Http\Controllers\ChatbotFaqController::class, 'store'])->name('faq.store');
+        Route::get('faq/{id}/edit', [App\Http\Controllers\ChatbotFaqController::class, 'edit'])->name('faq.edit');
+        Route::put('faq/{id}', [App\Http\Controllers\ChatbotFaqController::class, 'update'])->name('faq.update');
+        Route::delete('faq/{id}', [App\Http\Controllers\ChatbotFaqController::class, 'destroy'])->name('faq.destroy');
+        Route::get('analytics', [App\Http\Controllers\ChatbotFaqController::class, 'analytics'])->name('analytics');
+    });
+
     // ini route untuk halaman user frontend
     // Route::get('/', [TampilanuserController::class, 'index'])->name('indexuser');
     // Route::get('berita/{slug}', [TampilanuserController::class, 'detail_berita'])->name('berita_detail');
@@ -339,4 +354,11 @@ Route::group(['middleware' => ['auth', 'checkuser']], function () {
     });
 
     Route::get('penduduk/{nik}', [PendudukController::class, 'ajax']);
+});
+
+// Chatbot API Routes (Public - 24 Jam Service)
+Route::prefix('chatbot')->group(function () {
+    Route::post('/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
+    Route::get('/history', [ChatbotController::class, 'history'])->name('chatbot.history');
+    Route::post('/clear', [ChatbotController::class, 'clear'])->name('chatbot.clear');
 });

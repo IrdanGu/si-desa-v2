@@ -13,6 +13,7 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 
 	<!-- CSS
@@ -69,6 +70,9 @@
 		<script type="text/javascript" src="{{asset('constra/js/owl.carousel.min.js')}}"></script>
 
 		@stack('script')
+
+	{{-- Chatbot Widget --}}
+	@include('chatbot.widget')
 
 	</div><!-- Body inner end -->
 </body>
