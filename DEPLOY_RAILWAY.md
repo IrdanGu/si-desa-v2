@@ -7,6 +7,7 @@ This guide is specific to this repository.
 - The app is Laravel 11 on PHP 8.2 with Vite assets.
 - `bootstrap/app.php` already exposes a healthy HTTP endpoint at `/up`, which is a good Railway healthcheck path.
 - The app uses `SESSION_DRIVER=database`, `CACHE_STORE=database`, and `QUEUE_CONNECTION=database`.
+- `maatwebsite/excel` pulls in `phpoffice/phpspreadsheet`, so the Railway build needs PHP `gd` and `zip` extensions available before `composer install`.
 - This repository was missing the `sessions` migration. That is now added in `database/migrations/2026_03_07_000001_create_sessions_table.php`.
 - The app stores uploads in `public/storage` because `config/filesystems.php` points the `public` disk there.
 - `public/storage` is gitignored, so a GitHub deploy will not include your local media files.
@@ -47,6 +48,7 @@ Important notes:
 - `APP_KEY` must come from `php artisan key:generate --show`
 - `APP_URL` should become `https://${{RAILWAY_PUBLIC_DOMAIN}}` after you generate a Railway public domain
 - If your database service is not literally named `MySQL`, change the variable references accordingly
+- `RAILPACK_PHP_EXTENSIONS=gd,zip` is included to make sure Railpack installs the spreadsheet-related PHP extensions before Composer runs
 - `RAILPACK_SKIP_MIGRATIONS=true` is intentional here so Railway startup does not also run seeding in production
 
 ## Database setup
