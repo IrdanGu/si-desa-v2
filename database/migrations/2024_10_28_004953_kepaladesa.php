@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kepala_desa', function (Blueprint $table) {
-            $table->string('nama_ttd')->primary()->unique();
+            $table->id();
+            $table->string('nama_ttd');
             $table->string('ttd');
+            $table->timestamps();
         });
 
     }

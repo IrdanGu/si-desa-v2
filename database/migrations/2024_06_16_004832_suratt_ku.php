@@ -11,25 +11,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('surat__KeteranganUsaha', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nik');
-            $table->string('kk');
-            $table->string('nama');
-            $table->string('alamat');
-            $table->enum('pilihsurat', ['Surat Keterangan Tidak Mampu', 'Surat Keterangan Usaha']);
-            $table->string('fotoktp');
-            $table->string('fotokk');
-            $table->string('permohonan');
-            $table->string('deskripsi');
-            $table->string('no_hp');
-            $table->enum('status', ['Approve', 'Cancel']);
-            $table->boolean('is_read')->default(false);
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('nik')->references('nik')->on('penduduk')->onDelete('cascade');
-            $table->timestamps();
-        });
+        // Legacy migration kept for history only.
+        // The canonical surat usaha table is created later by
+        // 2024_11_02_041910_create_surat_keterangan_usaha_table.php.
     }
 
     /**
