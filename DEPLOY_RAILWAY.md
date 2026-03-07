@@ -38,6 +38,7 @@ Use Railway's normal Laravel detection for the web service.
 - Healthcheck path: `/up`
 
 Railpack will still handle install detection for Composer and npm. The custom build command is only there to avoid the default Laravel `route:cache` step, which currently breaks on this repository.
+The Railway scripts also fall back to `APP_URL=http://localhost` if `RAILWAY_PUBLIC_DOMAIN` has not been assigned yet during the first deploy.
 
 ## Environment variables
 
@@ -46,7 +47,8 @@ Copy `.env.railway.example` into Railway's Raw Editor and adjust values as neede
 Important notes:
 
 - `APP_KEY` must come from `php artisan key:generate --show`
-- `APP_URL` should become `https://${{RAILWAY_PUBLIC_DOMAIN}}` after you generate a Railway public domain
+- keep `APP_URL=http://localhost` for the first deploy if the service does not have a public domain yet
+- after Railway generates a public domain, change `APP_URL` to `https://${{RAILWAY_PUBLIC_DOMAIN}}` and redeploy
 - If your database service is not literally named `MySQL`, change the variable references accordingly
 - `RAILPACK_PHP_EXTENSIONS=gd,zip` is included to make sure Railpack installs the spreadsheet-related PHP extensions before Composer runs
 - `RAILPACK_SKIP_MIGRATIONS=true` is intentional here so Railway startup does not also run seeding in production
