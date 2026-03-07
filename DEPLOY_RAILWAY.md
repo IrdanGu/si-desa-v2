@@ -39,6 +39,7 @@ Use Railway's normal Laravel detection for the web service.
 
 Railpack will still handle install detection for Composer and npm. The custom build command is only there to avoid the default Laravel `route:cache` step, which currently breaks on this repository.
 The Railway scripts also fall back to `APP_URL=http://localhost` if `RAILWAY_PUBLIC_DOMAIN` has not been assigned yet during the first deploy.
+The pre-deploy script intentionally runs migrations before any database-backed cache clearing because this app uses `CACHE_STORE=database` on a fresh database.
 
 ## Environment variables
 
