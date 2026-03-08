@@ -141,7 +141,7 @@
                             @if ($product->primaryImage)
                                 <img src="{{ asset('storage/' . $product->primaryImage->path) }}" class="product-image" alt="{{ $product->nama }}">
                             @else
-                                <img src="{{ asset('storage/gambar/logoman.png') }}" class="product-image" alt="{{ $product->nama }}">
+                                <img src="{{ asset('site-assets/logoman.png') }}" class="product-image" alt="{{ $product->nama }}">
                             @endif
                             <div class="product-badges">
                                 @if ($product->is_featured)

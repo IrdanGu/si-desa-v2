@@ -112,7 +112,7 @@
         <div class="card_index w-50">
             <section id="desas" class="sambutan-container">
                 <h4 class="sambutan-header">SAMBUTAN KEPALA DESA</h4>
-                <img src="{{asset('storage/gambar/contohkepaladesa.png')}}" alt="Kepala Desa" class="sambutan-image" width="200">
+                <img src="{{ asset('site-assets/contohkepaladesa.png') }}" alt="Kepala Desa" class="sambutan-image" width="200">
                 <p class="sambutan-text">
                     Desa Mancagar adalah salah satu desa di Kecamatan Garawangi, Kabupaten Kuningan. Berjarak Kurang lebih 30 KM dari Kota Kuningan. Penghasilan Sumber Alam yang berlimpah terdiri dari Pertanian.
                 </p>
@@ -232,4 +232,3 @@
 <!-- Owl Carousel -->
 <script type="text/javascript" src="{{asset('constra/js/owl.carousel.min.js')}}"></script>
 @endpush
-

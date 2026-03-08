@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Theme style -->
-  <link rel="icon" href="{{asset('storage/gambar/logoman.png')}}" type="image/x-icon"/>
+  <link rel="icon" href="{{ asset('site-assets/logoman.png') }}" type="image/x-icon"/>
   <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">

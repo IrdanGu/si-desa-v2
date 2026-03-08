@@ -138,7 +138,7 @@
             <div class="col-md-6 mb-3">
                 @php
                     $mainImage = $product->images->first();
-                    $mainImageUrl = $mainImage ? asset('storage/' . $mainImage->path) : asset('storage/gambar/logoman.png');
+                    $mainImageUrl = $mainImage ? asset('storage/' . $mainImage->path) : asset('site-assets/logoman.png');
                 @endphp
                 <div class="product-media">
                     <img id="mainProductImage" src="{{ $mainImageUrl }}" class="product-main-image" alt="{{ $product->nama }}">
@@ -196,7 +196,7 @@
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="col-md-3 col-sm-6">
                         <div class="related-card">
-                            <img src="{{ $relatedProduct->primaryImage ? asset('storage/' . $relatedProduct->primaryImage->path) : asset('storage/gambar/logoman.png') }}"
+                            <img src="{{ $relatedProduct->primaryImage ? asset('storage/' . $relatedProduct->primaryImage->path) : asset('site-assets/logoman.png') }}"
                                 alt="{{ $relatedProduct->nama }}">
                             <div class="related-card-body">
                                 <strong>{{ \Illuminate\Support\Str::limit($relatedProduct->nama, 35) }}</strong>

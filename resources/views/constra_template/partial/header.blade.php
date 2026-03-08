@@ -39,7 +39,7 @@
             <div class="logo-area clearfix">
                 <div class="logo col-xs-12 col-md-3">
                     <a href="index.html">
-                        <img src="{{ asset('storage/gambar/logomancagar.png') }}" alt=""
+                        <img src="{{ asset('site-assets/logomancagar.png') }}" alt=""
                             style="width:207px; margin-top: 2px; margin-right:18px;">
                     </a>
                 </div>

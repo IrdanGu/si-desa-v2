@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12 footer-widget footer-about">
                     <h3 class="widget-title">Tentang Desa</h3>
-                <img class="footer-logo" src="{{asset('storage/gambar/footer.png')}}" alt="" style="width:150; height:39;" />
+                <img class="footer-logo" src="{{ asset('site-assets/footer.png') }}" alt="" style="width:150; height:39;" />
                     <p>Desa mancagar adalah salah satu desa di Kecamatan lebakwangi, Kabupaten Kuningan. Berjarak
                         Kurang lebih 30
                         KM dari Kota Kuningan. Penghasilan

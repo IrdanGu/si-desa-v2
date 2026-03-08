@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="brand">
-        <img src="{{ asset('storage/gambar/logos.png') }}" alt="logo">
+        <img src="{{ asset('site-assets/logos.png') }}" alt="logo">
     </div>
     <div class="card fat">
         <div class="card-body">

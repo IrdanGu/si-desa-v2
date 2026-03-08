@@ -19,7 +19,7 @@
 	<!-- CSS
 	================================================== -->
 	<!-- Bootstrap -->
-	<link rel="icon" href="{{asset('storage/gambar/logoman.png')}}" type="image/x-icon"/>
+	<link rel="icon" href="{{ asset('site-assets/logoman.png') }}" type="image/x-icon"/>
     <link rel="stylesheet" href="{{asset('constra/css/bootstrap.min.css')}}">
 	<!-- Template styles-->
     <link rel="stylesheet" href="{{asset('constra/css/style.css')}}">
