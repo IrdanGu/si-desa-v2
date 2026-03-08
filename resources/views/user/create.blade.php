@@ -20,7 +20,7 @@
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="email" class="form-control {{$errors->first('email') ? "is-invalid": ""}}" id="email" placeholder="Nama" value="{{old('email')}}">
+            <input type="email" name="email" class="form-control {{$errors->first('email') ? "is-invalid": ""}}" id="email" placeholder="Email" value="{{old('email')}}">
             <div class="invalid-feedback">
               {{$errors->first('email')}}
             </div>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" class="form-control {{$errors->first('password') ? "is-invalid": ""}}" id="password" placeholder="Password" value="{{old('password')}}">
+            <input type="password" name="password" class="form-control {{$errors->first('password') ? "is-invalid": ""}}" id="password" placeholder="Password">
             <div class="invalid-feedback">
               {{$errors->first('password')}}
             </div>
@@ -60,4 +60,3 @@
       </form>
   </div>
 @endsection
-

@@ -5,6 +5,18 @@
 
 @section('content')
 <div class="card">
+    @if(session('success'))
+        <div class="alert alert-success m-3 mb-0">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger m-3 mb-0">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card-header">
         <h3 class="card-title">Data User</h3>
     </div>
@@ -30,11 +42,11 @@
           <td>{{$users->email}}</td>
           <td>{{$users->level}}</td>
           <td>
-          <a  href=""><button type="submit"  class="btn btn-info"><i class="fas fa-edit"></i> Edit</button> </a>
-            <form  action="" method="post" style= "display: inline" class="form-check-inline">
+          <a href="{{ route('useredit', $users->id) }}" class="btn btn-info"><i class="fas fa-edit"></i> Edit</a>
+            <form action="{{ route('userdelete', $users->id) }}" method="post" style="display: inline" class="form-check-inline">
               @csrf
               @method('DELETE')
-              <button onclick="return confirm('Yakin Hapus Data Ini?')" class="btn  btn-danger" type="submit "><i class="fas fa-trash"></i> Hapus</button>
+              <button onclick="return confirm('Yakin Hapus Data Ini?')" class="btn btn-danger" type="submit"><i class="fas fa-trash"></i> Hapus</button>
             </form>
           </td>
           </tr>
@@ -44,4 +56,3 @@
     </div>
   </div>
 @endsection
-

@@ -270,6 +270,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::get('index', [UserController::class, 'index'])->name('userindex');
         Route::get('create', [UserController::class, 'create'])->name('usercreate');
         Route::post('store', [UserController::class, 'store'])->name('userstore');
+        Route::get('edit/{id}', [UserController::class, 'edit'])->name('useredit');
+        Route::put('store/{id}', [UserController::class, 'update'])->name('userupdate');
+        Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('userdelete');
     });
 
     Route::group([
