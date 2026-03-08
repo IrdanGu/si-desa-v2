@@ -24,10 +24,12 @@ class AgendaKarangtarunaController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        $agenda_karangtaruna = Agenda_karangtaruna::orderBy('created_at', 'desc')->paginate(7);
+        $agenda_karangtaruna = Agenda_karangtaruna::with('user')->orderBy('created_at', 'desc')->paginate(7);
         $cari = $request->get('keyword');
         if ($cari) {
-            $agenda_karangtaruna = Agenda_karangtaruna::where('judul', 'LIKE', "%$cari%")->paginate(7);
+            $agenda_karangtaruna = Agenda_karangtaruna::with('user')
+                ->where('judul', 'LIKE', "%$cari%")
+                ->paginate(7);
         }
 
         return view('agenda_karangtaruna.index', compact('agenda_karangtaruna', 'surat_ktm', 'surat_ku', 'surat_domisili', 'notifications'));
@@ -55,20 +57,20 @@ class AgendaKarangtarunaController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->get('id');
+        $data = $this->validateAgenda($request);
+
         $agenda_karangtaruna = new Agenda_karangtaruna();
-        $agenda_karangtaruna->id = $id;
-        $agenda_karangtaruna->judul = $request->get('judul');
-        $agenda_karangtaruna->tanggal = date('Y-m-d', strtotime($request->get('tanggal')));
-        $agenda_karangtaruna->jam = $request->get('jam');
-        $agenda_karangtaruna->acara = $request->get('acara');
-        $agenda_karangtaruna->tempat = $request->get('tempat');
-        $agenda_karangtaruna->content = ($request->get('content'));
+        $agenda_karangtaruna->judul = $data['judul'];
+        $agenda_karangtaruna->tanggal = $data['tanggal'];
+        $agenda_karangtaruna->jam = $data['jam'];
+        $agenda_karangtaruna->acara = $data['acara'];
+        $agenda_karangtaruna->tempat = $data['tempat'];
+        $agenda_karangtaruna->content = $data['content'];
         $agenda_karangtaruna->user_id = Auth::user()->id;
 
         $agenda_karangtaruna->save();
 
-        return redirect()->route('agenda_karangtarunaindex');
+        return redirect()->route('agenda_karangtarunaindex')->with('success', 'Agenda karang taruna berhasil ditambahkan.');
     }
 
     /**
@@ -93,13 +95,7 @@ class AgendaKarangtarunaController extends Controller
         $notifications_domisili = Surat_KeteranganDomisili::where('is_read', false)->get();
         $notifications = $notifications_sktm->merge($notifications_ku)->merge($notifications_domisili);
 
-        // Try to find by ID first, then by judul for backward compatibility
-        $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-
-        if (! $agenda_karangtaruna) {
-            // If not found by ID, try by judul
-            $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
-        }
+        $agenda_karangtaruna = $this->findAgendaKarangtaruna($id);
 
         if (! $agenda_karangtaruna) {
             return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
@@ -113,24 +109,20 @@ class AgendaKarangtarunaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Try to find by ID first, then by judul for backward compatibility
-        $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-
-        if (! $agenda_karangtaruna) {
-            // If not found by ID, try by judul
-            $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
-        }
+        $agenda_karangtaruna = $this->findAgendaKarangtaruna($id);
 
         if (! $agenda_karangtaruna) {
             return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
         }
 
-        $agenda_karangtaruna->judul = $request->get('judul');
-        $agenda_karangtaruna->tanggal = date('Y-m-d', strtotime($request->get('tanggal')));
-        $agenda_karangtaruna->jam = $request->get('jam');
-        $agenda_karangtaruna->acara = $request->get('acara');
-        $agenda_karangtaruna->tempat = $request->get('tempat');
-        $agenda_karangtaruna->content = ($request->get('content'));
+        $data = $this->validateAgenda($request);
+
+        $agenda_karangtaruna->judul = $data['judul'];
+        $agenda_karangtaruna->tanggal = $data['tanggal'];
+        $agenda_karangtaruna->jam = $data['jam'];
+        $agenda_karangtaruna->acara = $data['acara'];
+        $agenda_karangtaruna->tempat = $data['tempat'];
+        $agenda_karangtaruna->content = $data['content'];
 
         $agenda_karangtaruna->save();
 
@@ -142,13 +134,7 @@ class AgendaKarangtarunaController extends Controller
      */
     public function destroy($id)
     {
-        // Try to find by ID first, then by judul (title) for backward compatibility
-        $agenda_karangtaruna = Agenda_karangtaruna::find($id);
-
-        if (! $agenda_karangtaruna) {
-            // If not found by ID, try by judul
-            $agenda_karangtaruna = Agenda_karangtaruna::where('judul', $id)->first();
-        }
+        $agenda_karangtaruna = $this->findAgendaKarangtaruna($id);
 
         if ($agenda_karangtaruna) {
             $agenda_karangtaruna->delete();
@@ -157,5 +143,23 @@ class AgendaKarangtarunaController extends Controller
         }
 
         return redirect()->route('agenda_karangtarunaindex')->with('error', 'Agenda tidak ditemukan.');
+    }
+
+    private function validateAgenda(Request $request): array
+    {
+        return $request->validate([
+            'judul' => ['required', 'string', 'max:255'],
+            'tanggal' => ['required', 'date'],
+            'jam' => ['required', 'string', 'max:255'],
+            'acara' => ['required', 'string', 'max:255'],
+            'tempat' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+        ]);
+    }
+
+    private function findAgendaKarangtaruna($identifier): ?Agenda_karangtaruna
+    {
+        return Agenda_karangtaruna::find($identifier)
+            ?? Agenda_karangtaruna::where('judul', $identifier)->first();
     }
 }

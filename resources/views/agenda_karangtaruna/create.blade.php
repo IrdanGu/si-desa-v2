@@ -36,30 +36,31 @@
                     <div class="invalid-feedback">
                       {{$errors->first('jam')}}
                     </div>
+                  </div>
 
-                    <div class="form-group">
-                        <label for="acara">Acara</label>
-                        <input type="text" name="acara" class="form-control {{$errors->first('acara') ? "is-invalid": ""}}" id="acara" placeholder="acara" value="{{old('acara')}}">
-                        <div class="invalid-feedback">
-                          {{$errors->first('acara')}}
-                        </div>
+                  <div class="form-group">
+                      <label for="acara">Acara</label>
+                      <input type="text" name="acara" class="form-control {{$errors->first('acara') ? "is-invalid": ""}}" id="acara" placeholder="acara" value="{{old('acara')}}">
+                      <div class="invalid-feedback">
+                        {{$errors->first('acara')}}
+                      </div>
+                  </div>
 
+                  <div class="form-group">
+                      <label for="tempat">Tempat</label>
+                      <input type="text" name="tempat" class="form-control {{$errors->first('tempat') ? "is-invalid": ""}}" id="tempat" placeholder="tempat" value="{{old('tempat')}}">
+                      <div class="invalid-feedback">
+                        {{$errors->first('tempat')}}
+                      </div>
+                  </div>
 
-                    <div class="form-group">
-                        <label for="tempat">Tempat</label>
-                        <input type="text" name="tempat" class="form-control {{$errors->first('tempat') ? "is-invalid": ""}}" id="tempat" placeholder="tempat" value="{{old('tempat')}}">
-                        <div class="invalid-feedback">
-                          {{$errors->first('tempat')}}
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="judul">Content</label>
-                            <textarea class="textarea {{$errors->first('content') ? "is-invalid": ""}}" name="content" placeholder="Content" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{old('content')}}</textarea>
-                            <div class="invalid-feedback">
-                              {{$errors->first('content')}}
-                            </div>
-                        </div>
+                  <div class="form-group">
+                      <label for="judul">Content</label>
+                      <textarea class="textarea {{$errors->first('content') ? "is-invalid": ""}}" name="content" placeholder="Content" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{old('content')}}</textarea>
+                      <div class="invalid-feedback">
+                        {{$errors->first('content')}}
+                      </div>
+                  </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
         </div>
@@ -88,5 +89,4 @@
     });
     </script>
 @endpush
-
 

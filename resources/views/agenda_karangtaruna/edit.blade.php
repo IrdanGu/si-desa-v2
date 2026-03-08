@@ -12,7 +12,7 @@ Agenda Karangtaruna
             @method('PUT')
                 <div class="form-group">
                     <label for="judul">Judul</label>
-                    <input type="text" name="judul" class="form-control {{$errors->first('judul') ? "is-invalid": ""}}" id="judul" value="{{$agenda_karangtaruna->judul}}">
+                    <input type="text" name="judul" class="form-control {{$errors->first('judul') ? "is-invalid": ""}}" id="judul" value="{{ old('judul', $agenda_karangtaruna->judul) }}">
                     <div class="invalid-feedback">
                       {{$errors->first('judul')}}
                     </div>
@@ -24,7 +24,7 @@ Agenda Karangtaruna
                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
-                          <input name="tanggal" type="date" class="form-control datetimepicker-input {{$errors->first('tanggal') ? "is-invalid": ""}} " data-target="#reservationdate" value="{{date('d-m-Y',strtotime($agenda_karangtaruna->tanggal))}}">
+                          <input name="tanggal" type="date" class="form-control datetimepicker-input {{$errors->first('tanggal') ? "is-invalid": ""}} " data-target="#reservationdate" value="{{ old('tanggal', date('Y-m-d', strtotime($agenda_karangtaruna->tanggal))) }}">
                           <div class="invalid-feedback">
                             {{$errors->first('tanggal')}}
                           </div>
@@ -33,7 +33,7 @@ Agenda Karangtaruna
 
                   <div class="form-group">
                     <label for="jam">Jam</label>
-                    <input type="text" name="jam" class="form-control {{$errors->first('jam') ? "is-invalid": ""}}" id="jam" placeholder="jam" value="{{$agenda_karangtaruna->jam}}">
+                    <input type="text" name="jam" class="form-control {{$errors->first('jam') ? "is-invalid": ""}}" id="jam" placeholder="jam" value="{{ old('jam', $agenda_karangtaruna->jam) }}">
                     <div class="invalid-feedback">
                       {{$errors->first('jam')}}
                     </div>
@@ -41,7 +41,7 @@ Agenda Karangtaruna
 
                     <div class="form-group">
                         <label for="acara">Acara</label>
-                        <input type="text" name="acara" class="form-control {{$errors->first('acara') ? "is-invalid": ""}}" id="acara" placeholder="acara" value="{{$agenda_karangtaruna->acara}}">
+                        <input type="text" name="acara" class="form-control {{$errors->first('acara') ? "is-invalid": ""}}" id="acara" placeholder="acara" value="{{ old('acara', $agenda_karangtaruna->acara) }}">
                         <div class="invalid-feedback">
                           {{$errors->first('acara')}}
                         </div>
@@ -49,7 +49,7 @@ Agenda Karangtaruna
 
                         <div class="form-group">
                             <label for="tempat">Tempat</label>
-                            <input type="text" name="tempat" class="form-control {{$errors->first('tempat') ? "is-invalid": ""}}" id="tempat" placeholder="tempat" value="{{$agenda_karangtaruna->tempat}}">
+                            <input type="text" name="tempat" class="form-control {{$errors->first('tempat') ? "is-invalid": ""}}" id="tempat" placeholder="tempat" value="{{ old('tempat', $agenda_karangtaruna->tempat) }}">
                             <div class="invalid-feedback">
                               {{$errors->first('tempat')}}
                             </div>
@@ -58,7 +58,7 @@ Agenda Karangtaruna
 
                 <div class="form-group">
                     <label for="judul">Content</label>
-                    <textarea class="textarea {{$errors->first('content') ? "is-invalid": ""}}" name="content" placeholder="Content" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{$agenda_karangtaruna->content}}</textarea>
+                    <textarea class="textarea {{$errors->first('content') ? "is-invalid": ""}}" name="content" placeholder="Content" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('content', $agenda_karangtaruna->content) }}</textarea>
                     <div class="invalid-feedback">
                       {{$errors->first('content')}}
                     </div>
@@ -90,5 +90,4 @@ Agenda Karangtaruna
     });
     </script>
 @endpush
-
 
