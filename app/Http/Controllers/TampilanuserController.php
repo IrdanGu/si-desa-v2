@@ -17,6 +17,7 @@ use App\Models\Surat_KeteranganUsaha;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class TampilanuserController extends Controller
@@ -26,16 +27,31 @@ class TampilanuserController extends Controller
      */
     public function index()
     {
-        $P = Penduduk::where('jenis_kelamin', 'P')->count();
-        $LK = Penduduk::where('jenis_kelamin', 'LK')->count();
-        $Kpl = Penduduk::where('hubungan', 'Kpl. Keluarga')->count();
-        $jumlahkk = Penduduk::count();
-        $jmlpenduduk = Penduduk::count();
-        $berita = Berita::orderBy('created_at', 'desc')->paginate(3);
-        $agenda = Agenda::orderBy('created_at', 'desc')->paginate(3);
-        $agenda_karangtaruna = Agenda_karangtaruna::orderBy('created_at', 'desc')->paginate(3);
+        $summary = Cache::remember('homepage.summary.v1', now()->addMinutes(10), function () {
+            $stats = Penduduk::query()->selectRaw("
+                COUNT(*) as jmlpenduduk,
+                SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as P,
+                SUM(CASE WHEN jenis_kelamin = 'LK' THEN 1 ELSE 0 END) as LK,
+                SUM(CASE WHEN hubungan = 'Kpl. Keluarga' THEN 1 ELSE 0 END) as Kpl
+            ")->first();
 
-        return view('frontend.index', compact('berita', 'agenda', 'agenda_karangtaruna', 'jumlahkk', 'P', 'LK', 'Kpl', 'jmlpenduduk'));
+            return [
+                'P' => (int) $stats->P,
+                'LK' => (int) $stats->LK,
+                'Kpl' => (int) $stats->Kpl,
+                'jumlahkk' => (int) $stats->jmlpenduduk,
+                'jmlpenduduk' => (int) $stats->jmlpenduduk,
+            ];
+        });
+
+        $berita = Berita::with('user:id,level')->latest()->simplePaginate(3);
+        $agenda = Agenda::latest()->limit(3)->get();
+        $agenda_karangtaruna = Agenda_karangtaruna::latest()->limit(3)->get();
+
+        return view('frontend.index', array_merge(
+            $summary,
+            compact('berita', 'agenda', 'agenda_karangtaruna')
+        ));
     }
 
     // user berita
