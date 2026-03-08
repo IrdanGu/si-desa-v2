@@ -1,6 +1,6 @@
 <?php
 
-use App\http\Middleware\Admin;
+use App\Http\Middleware\Admin;
 use App\Http\Middleware\checkuser;
 use App\Http\Middleware\Karangtaruna;
 use Illuminate\Foundation\Application;
