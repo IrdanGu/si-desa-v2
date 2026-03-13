@@ -88,8 +88,8 @@ Akses website di `http://127.0.0.1:8000`.
 2. Halaman publik dilayani oleh `TampilanuserController` (berita, agenda, aparatur, galeri, potensi desa, produk).
 3. Autentikasi menggunakan Laravel Auth (`Auth::routes` + register user khusus di `/register/user`).
 4. Otorisasi role dikontrol middleware:
-   - `admin`: hanya `users.level = admin`.
-   - `checkuser`: akses untuk `admin`, `karangtaruna`, dan `user`.
+    - `admin`: hanya `users.level = admin`.
+    - `checkuser`: akses untuk `admin`, `karangtaruna`, dan `user`.
 5. Setelah login, pengguna masuk ke dashboard sesuai akses route.
 6. Modul admin melakukan CRUD data inti desa (penduduk, berita, agenda, galeri, aparatur, surat, produk).
 7. Modul surat menerima data pengajuan, lalu admin dapat validasi dan cetak dokumen.
@@ -106,3 +106,47 @@ Akses website di `http://127.0.0.1:8000`.
 ## Catatan
 
 - Untuk memastikan route homepage sudah benar, jalankan `php artisan route:list` dan pastikan `/` mengarah ke `TampilanuserController@index`.
+
+- jika kesusahan "This password does not use the Bcrypt algorithm."
+  use this method
+  Benar, itu karena PowerShell “makan” variabel `$u` di command one-liner.
+
+Pakai cara aman ini (interactive), paling gampang:
+
+```powershell
+php artisan tinker
+```
+
+Lalu paste baris ini satu per satu:
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+$u = User::firstOrNew(['email' => 'admin@gmail.com']);
+$u->name = $u->name ?: 'Admin';
+$u->level = 'admin';
+$u->password = Hash::make('admin123');
+$u->save();
+
+exit
+```
+
+Setelah itu:
+
+```powershell
+php artisan optimize:clear
+```
+
+Coba login lagi di `http://127.0.0.1:8000/login`:
+
+- Email: `admin@gmail.com`
+- Password: `admin123`
+
+Opsional cek hash sudah benar:
+
+```powershell
+php artisan tinker --execute "echo App\Models\User::where('email','admin@gmail.com')->value('password');"
+```
+
+Harus diawali `$2y$` (bcrypt).

@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="text-center ">
                     <div class="copyright-info ">
-                        <span>Copyright © 2024 by sidesa</span>
+
                     </div>
                 </div>
             </div><!-- Row end -->
