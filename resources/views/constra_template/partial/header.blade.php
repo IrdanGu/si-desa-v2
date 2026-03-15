@@ -12,9 +12,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 top-social text-right">
                 <ul class="unstyled">
                     <li>
-                        <a href="https://www.instagram.com/pkm_pm" target="_blank">
-                            <i class="fa fa-instagram"></i> pkm_pm_sidesa
-                        </a>
+
                     </li>
 
                     <li>
